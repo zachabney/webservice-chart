@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "webservice-chart.fullname" . }}
+  labels:
+    app: {{ template "webservice-chart.name" . }}
+    chart: {{ template "webservice-chart.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ template "webservice-chart.service.internalPort" . }}
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "webservice-chart.name" . }}
+    release: {{ .Release.Name }}
