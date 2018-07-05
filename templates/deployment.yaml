@@ -31,14 +31,14 @@ spec:
             - name: http
               containerPort: {{ template "webservice-chart.service.internalPort" . }}
               protocol: TCP
+          {{- with .Values.monitoring.livenessProbe }}
           livenessProbe:
-            httpGet:
-              path: /
-              port: http
+{{ toYaml . | trimSuffix "\n" | indent 12 }}
+          {{- end }}
+          {{- with .Values.monitoring.readinessProbe }}
           readinessProbe:
-            httpGet:
-              path: /
-              port: http
+{{ toYaml . | trimSuffix "\n" | indent 12 }}
+          {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
